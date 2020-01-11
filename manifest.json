@@ -3,9 +3,9 @@
 
   "name": "sonix.ai assistant",
   "version": "0.0.1",
+  "homepage_url": "https://github.com/IbraheemTuffaha/sonix-ai",
   "description": "An extension for sonix.ai to add more options related to fonts and managing characters in edit environment.",
   "permissions": ["https://my.sonix.ai/recordings/*"],
-
   "content_scripts": [{
     "css": ["css/count_characters.css", "css/change_font.css"],
     "js": ["js/jquery-3.4.1.min.js", "js/count_characters.js", "js/constants.js", "js/change_font.js"],
