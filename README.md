@@ -6,7 +6,7 @@ An extension for [sonix.ai](https://sonix.ai) to add more options related to fon
 2. ❌ Add an option to change Arabic Text font size.
 3. ❌ Add an option to change Araic Font
 4. ❌ Change the color of Tashkeel characters.
-5. ❌ Auto Taskeel for Shaddah and Tanween.
+5. ❌ Add option for automatic addition of Shaddah and Tanween-Fath.
 
 Done = ✔️
 
