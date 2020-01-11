@@ -9,5 +9,11 @@
     "css": ["css/count_characters.css", "css/change_font.css"],
     "js": ["js/jquery-3.4.1.min.js", "js/count_characters.js", "js/constants.js", "js/change_font.js"],
     "matches": ["https://my.sonix.ai/recordings/*"]
-  }]
+  }],
+
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
 }
