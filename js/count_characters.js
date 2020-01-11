@@ -17,11 +17,16 @@ function addCounts() {
 function addCount(obj) {
     content = obj.getElementsByClassName("exchange--content");
     extra = obj.getElementsByClassName("exchange--extra");
-    
+
     var text = $(content).text();
     text = text.match(ACCEPTED_CHARS_REGEX).join("");
 
     var count = text.length;
+
+    if(text.length >= 3 && text.substring(text.length-3, text.length) == "###") {
+        count -= 3;
+    }
+
     $(extra).append("<span class=\"characters-count\">" + count.toString() + "</span>");
 };
 

@@ -5,6 +5,7 @@ An extension for [sonix.ai](https://sonix.ai) to add more options related to fon
 - [x] Count number of characters:
   - [x] Show the number beside each paragraph.
   - [x] Exclude counting Tashkeel.
+  - [x] Exclude counting trailing 3 HashTags.
 - [ ] Change text font and size:
   - [x] Change font to `Amiri`.
   - [x] Set font size to `2rem`.
@@ -12,4 +13,3 @@ An extension for [sonix.ai](https://sonix.ai) to add more options related to fon
   - [ ] Add option to change font size.
 - [ ] Change the color of Tashkeel characters.
 - [ ] Add option for automatic addition of Shaddah and Tanween-Fath.
-- [ ] Handle the missing feature of adding newline character in a paragraph.
