@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+
+  "name": "sonix.ai assistant",
+  "version": "0.0.1",
+  "description": "An extension for sonix.ai to add more options related to fonts and managing characters",
+
+  "content_scripts": [{
+    "css": [],
+    "js": [],
+    "matches": ["https://my.sonix.ai/recordings/*"]
+  }]
+
+}
