@@ -11,6 +11,10 @@
     "matches": ["https://my.sonix.ai/recordings/*"]
   }],
 
+  "web_accessible_resources": [
+    "fonts/Amiri-Regular.woff2"
+  ],
+
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",

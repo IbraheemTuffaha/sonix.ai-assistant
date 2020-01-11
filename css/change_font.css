@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Amiri';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('chrome-extension://__MSG_@@extension_id__/fonts/Amiri-Regular.woff2') format('woff');
+}
+
 .word {
   font-family: Amiri, Arial, Times !important;
   font-size: 2rem !important;
