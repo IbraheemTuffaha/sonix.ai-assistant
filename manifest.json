@@ -6,9 +6,8 @@
   "description": "An extension for sonix.ai to add more options related to fonts and managing characters",
 
   "content_scripts": [{
-    "css": [],
-    "js": [],
+    "css": ["css/count_characters.css"],
+    "js": ["js/jquery-3.4.1.min.js", "js/count_characters.js", "js/constants.js"],
     "matches": ["https://my.sonix.ai/recordings/*"]
   }]
-
 }
