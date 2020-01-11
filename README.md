@@ -8,7 +8,7 @@ An extension for [sonix.ai](https://sonix.ai) to add more options related to fon
 - [ ] Change text font and size:
   - [x] Change font to `Amiri`.
   - [x] Set font size to `2rem`.
-  - [ ] Add space between lines.
+  - [x] Add space between lines.
   - [ ] Add option to change font size.
 - [ ] Change the color of Tashkeel characters.
 - [ ] Add option for automatic addition of Shaddah and Tanween-Fath.
