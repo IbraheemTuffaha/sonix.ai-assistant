@@ -3,7 +3,7 @@
 
   "name": "sonix.ai assistant",
   "version": "0.0.1",
-  "description": "An extension for sonix.ai to add more options related to fonts and managing characters",
+  "description": "An extension for sonix.ai to add more options related to fonts and managing characters in edit environment.",
 
   "content_scripts": [{
     "css": [],
