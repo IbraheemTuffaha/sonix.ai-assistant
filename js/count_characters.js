@@ -6,6 +6,11 @@ window.addEventListener("keyup", function() {
     addCounts();
 });
 
+window.addEventListener('scroll', function() {
+    addCounts();
+    setTimeout(function(){ addCounts() }, 200);
+});
+
 function addCounts() {
     $(".characters-count").remove();
     var paragraphs = getParagraphs();
