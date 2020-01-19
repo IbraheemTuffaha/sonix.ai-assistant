@@ -1,6 +1,11 @@
 # sonix-ai
 An extension for [sonix.ai](https://sonix.ai) to add more options related to fonts and managing characters in edit environment.
 
+## Chrome Installation
+Follow this link to install from Google Chrome webstore:
+
+https://chrome.google.com/webstore/detail/sonixai-assistant/jcihidblogjjipifllnemojemlbnaibo
+
 ## Features
 - [x] Count number of characters:
   - [x] Show the number beside each paragraph.
