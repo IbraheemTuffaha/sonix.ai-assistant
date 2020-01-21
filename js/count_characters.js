@@ -1,23 +1,21 @@
-//var time_bar = document.getElementById("waveform");
-//var current_time = time_bar.getElementsByClassName("timecode text--noselect")[0]
-
-
-// events for testing
-
-$(document).ready(window.setInterval(update_subtitle, 200)); 
 // Global declarations
 var time_bar = document.getElementById("waveform");
+
+// Options for the observer (which mutations to observe)
+// https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+const config = { attributes: true, childList: true, subtree: true };
+const observer = new MutationObserver(update_subtitle);
+observer.observe(time_bar, config);
+
+
 var caption = document.createElement("p");
-//var t = window.setTimeout(function(){ window.clearInterval(t);}, 5000);
-//window.setInterval(get_script, 100);
-
-
 caption.setAttribute("id", "caption");
+caption.style.cssText = "text-align: center; color: white; background-color: black;";
 var text = document.createTextNode("intital");
 caption.appendChild(text);
 var element = document.getElementById("vjs_video_3");
 element.appendChild(caption);
-//_________END my chnages________________
+
 
 
 
@@ -120,7 +118,8 @@ function update_subtitle(){
     };
 
     function updateCaption(val){  
-        caption.textContent = val;
+        //caption.textContent = val;
+        $(caption).html(val);
         };
 };
 
@@ -157,7 +156,7 @@ class Paragraph {
         var content = parag_element.getElementsByClassName("exchange--content");
         text = $(content).text();
         if (!this._is_complete(text)){
-            return text.replace(this.eol, "").concat("\n").concat(this._extract_text(parag_element.nextSibling));
+            return text.replace(this.eol, "").concat("<br>").concat(this._extract_text(parag_element.nextSibling));
         }
          
         return text;
