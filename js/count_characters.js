@@ -7,14 +7,19 @@ const config = { attributes: true, childList: true, subtree: true };
 const observer = new MutationObserver(update_subtitle);
 observer.observe(time_bar, config);
 
+var element = document.getElementById("vjs_video_3");
+var caption_container = document.createElement("div");
+caption_container.setAttribute("id", "caption_container");
+caption_container.style.cssText = "text-align: center; position:relative; top: -5em;";
+element.appendChild(caption_container);
+
 
 var caption = document.createElement("p");
 caption.setAttribute("id", "caption");
-caption.style.cssText = "text-align: center; color: white; background-color: black;";
-var text = document.createTextNode("intital");
+caption.style.cssText = "display:inline-block; color: white; background-color: rgba(0, 0, 0, 0.85);";
+var text = document.createTextNode("");
 caption.appendChild(text);
-var element = document.getElementById("vjs_video_3");
-element.appendChild(caption);
+caption_container.appendChild(caption);
 
 
 
@@ -94,7 +99,7 @@ function update_subtitle(){
         var parag = new Paragraph(paragraphs[0]);
         
 
-        while (!(timeint < timestr2int(parag.end_time()))){
+        while (timeint >= timestr2int(parag.end_time())){
             parag = new Paragraph(parag.nextParagraph);
         }
         updateCaption(parag.as_text());
@@ -137,7 +142,11 @@ class Paragraph {
         if (!this.nextParagraph){
             this.as_text(); //to update nextParag var 
         }   
-        this._end_time = this.nextParagraph.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
+        try{
+        this._end_time = this.nextParagraph.getElementsByClassName("exchange--timestamp-value").item(0).innerText;}
+        catch{
+            debugger;
+        }
         return this._end_time;
     }
 
@@ -156,7 +165,12 @@ class Paragraph {
         var content = parag_element.getElementsByClassName("exchange--content");
         text = $(content).text();
         if (!this._is_complete(text)){
-            return text.replace(this.eol, "").concat("<br>").concat(this._extract_text(parag_element.nextSibling));
+            try{
+            return text.replace(this.eol, "").concat("<br>").concat(this._extract_text(parag_element.nextSibling));}
+            catch{
+            return text.replace(this.eol, "");
+            debugger; 
+            }
         }
          
         return text;
