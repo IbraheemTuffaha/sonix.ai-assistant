@@ -3,8 +3,8 @@
 
 
 // events for testing
-window.setInterval(update_subtitle, 5000);
 
+$(document).ready(window.setInterval(update_subtitle, 200)); 
 // Global declarations
 var time_bar = document.getElementById("waveform");
 var caption = document.createElement("p");
@@ -94,10 +94,12 @@ function update_subtitle(){
         var timeint = timestr2int(timestr);
         var paragraphs =  getParagraphs();
         var parag = new Paragraph(paragraphs[0]);
-        var stime = parag.start_time();
-        var etime = parag.end_time();
-        var text = parag.as_text();
-        debugger;
+        
+
+        while (!(timeint < timestr2int(parag.end_time()))){
+            parag = new Paragraph(parag.nextParagraph);
+        }
+        updateCaption(parag.as_text());
 
 
         
@@ -155,7 +157,7 @@ class Paragraph {
         var content = parag_element.getElementsByClassName("exchange--content");
         text = $(content).text();
         if (!this._is_complete(text)){
-            return text.replace(this.eol, "").concat(" ").concat(this._extract_text(parag_element.nextSibling));
+            return text.replace(this.eol, "").concat("\n").concat(this._extract_text(parag_element.nextSibling));
         }
          
         return text;
