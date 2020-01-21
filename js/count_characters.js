@@ -1,6 +1,6 @@
 // Global declarations
+var eol = "###"
 var time_bar = document.getElementById("waveform");
-
 // Options for the observer (which mutations to observe)
 // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
 const config = { attributes: true, childList: true, subtree: true };
@@ -60,8 +60,8 @@ function addCount(obj) {
 
     var count = text.length;
 
-    if(text.length >= 3 && text.substring(text.length-3, text.length) == "###") {
-        count -= 3;
+    if(!is_complete(text)) {
+        count -= eol.length;
     }
 
     $(extra).append("<span class=\"characters-count\">" + count.toString() + "</span>");
@@ -71,6 +71,10 @@ function getParagraphs() {
     var paragraphs = document.getElementsByClassName("exchange--speaker");
     return paragraphs;
 }
+// check if paragraph is complete (no splitting)
+function is_complete(text){ 
+    return !(text.length >= eol.length && text.substring(text.length-eol.length, text.length) == eol);
+} 
 
 
 
@@ -81,7 +85,7 @@ function update_subtitle(){
     parag_text = as_text(paragraphs[index]);
     if (!is_complete(parag_text)){
         next_parag_text = as_text(paragraphs[index+1]);
-        parag_text = parag_text.replace("###", "").concat("<br>").concat(next_parag_text);
+        parag_text = parag_text.replace(eol, "").concat("<br>").concat(next_parag_text);
     }
     $(caption).html(parag_text);
 
@@ -122,15 +126,8 @@ function update_subtitle(){
     
     // get start time of a paragraph 
     function  start_time(parag_element){
-        parag_element;
         return parag_element.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
-    }
-
-    // check if paragraph is complete (no splitting)
-    function is_complete(text, eol="###"){
-        var val = !(text.length >= eol.length && text.substring(text.length-eol.length, text.length) == eol); 
-        return !(text.length >= eol.length && text.substring(text.length-eol.length, text.length) == eol);
-    }  
+    } 
     
     // get text content of a paragraph
     function as_text(parag_element){
