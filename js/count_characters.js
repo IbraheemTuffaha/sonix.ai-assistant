@@ -87,16 +87,24 @@ function update_subtitle(){
         
  
 
-    // function receives a time frame as string ("HH:MM:SS") , and returns the 
-    // corresponding paragraph
+    // function receives a time frame as string ("HH:MM:SS") , and returns a 
+    // paragraph object
     function get_index_of_paragraph(timestr){
+        
         var timeint = timestr2int(timestr);
         var paragraphs =  getParagraphs();
-        var parag = paragraphs[0];
-        updateCaption(parag.textContent);
+        var parag = new Paragraph(paragraphs[0]);
+        var stime = parag.start_time();
+        var etime = parag.end_time();
+        var text = parag.as_text();
+        debugger;
 
 
-    // convert time in string format ("HH:MM:SS") to seconds in int (65)
+        
+
+
+
+    // convert time in string format ("HH:MM:SS") to seconds as int (65)
     function timestr2int(timestr){
         var segments = timestr.split(":");
         var weight = 3600;
@@ -115,5 +123,47 @@ function update_subtitle(){
 };
 
 
+
+// Paragraphs class
+class Paragraph {
+    constructor(parag_element, eol="###") {
+      this.parag_element = parag_element;
+      this.eol = eol;
+      this.nextParagraph = false;
+    }
+
+    end_time(){
+        if (!this.nextParagraph){
+            this.as_text(); //to update nextParag var 
+        }   
+        this._end_time = this.nextParagraph.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
+        return this._end_time;
+    }
+
+    as_text(){
+        return this._extract_text(this.parag_element);
+    }
+
+    start_time(){
+        this._start_time = this.parag_element.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
+        return this._start_time;
+    }
+
+  
+    _extract_text(parag_element){
+        this.nextParagraph = parag_element.nextSibling;
+        var content = parag_element.getElementsByClassName("exchange--content");
+        text = $(content).text();
+        if (!this._is_complete(text)){
+            return text.replace(this.eol, "").concat(" ").concat(this._extract_text(parag_element.nextSibling));
+        }
+         
+        return text;
+    }
+    
+    _is_complete(text){
+        return !(text.length >= this.eol.length && text.substring(text.length-this.eol.length, text.length) == this.eol);
+      }  
+}
 
 
