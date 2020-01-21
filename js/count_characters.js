@@ -66,49 +66,44 @@ function addCount(obj) {
 function getParagraphs() {
     var paragraphs = document.getElementsByClassName("exchange--speaker");
     return paragraphs;
-};
-
-// my changes_________________________-
-
-
-//make a class for paragraph
-
-function get_script(){
-var current_time = time_bar.getElementsByClassName("timecode text--noselect")[0];
-updateCaption(current_time.innerText); 
 }
-
-
 
 
 
 function update_subtitle(){
     var current_time = time_bar.getElementsByClassName("timecode text--noselect")[0];
-    get_index_of_paragraph(current_time.innerText);  
+    var paragraphs =  getParagraphs();
+    var index = get_index_of_paragraph(paragraphs, current_time.innerText);
+    parag_text = as_text(paragraphs[index]);
+    if (!is_complete(parag_text)){
+        next_parag_text = as_text(paragraphs[index+1]);
+        parag_text = parag_text.replace("###", "").concat("<br>").concat(next_parag_text);
+    }
 
+    $(caption).html(parag_text);
 
-        
- 
-
+    
     // function receives a time frame as string ("HH:MM:SS") , and returns a 
     // paragraph object
-    function get_index_of_paragraph(timestr){
-        
+    function get_index_of_paragraph(paragraphs, timestr){
         var timeint = timestr2int(timestr);
-        var paragraphs =  getParagraphs();
-        var parag = new Paragraph(paragraphs[0]);
-        
-
-        while (timeint >= timestr2int(parag.end_time())){
-            parag = new Paragraph(parag.nextParagraph);
+        var paragraph_index = 0;
+        var i;
+        for (i = 0; i< paragraphs.length; i++){
+            var cond = timeint >= timestr2int(start_time(paragraphs[i+1])) ;
+            if (!cond){
+                break;}
         }
-        updateCaption(parag.as_text());
-
-
-        
-
-
-
+        paragraph_index = i;
+        if (paragraph_index>0){
+            previous_parag_text = as_text(paragraphs[paragraph_index-1]);
+            if(!is_complete(previous_parag_text)){
+                return paragraph_index - 1; 
+            }
+        }
+        return paragraph_index;
+    }
+    
     // convert time in string format ("HH:MM:SS") to seconds as int (65)
     function timestr2int(timestr){
         var segments = timestr.split(":");
@@ -119,66 +114,19 @@ function update_subtitle(){
             weight /= 60;
         } 
         return result;
-    };
-    };
-
-    function updateCaption(val){  
-        //caption.textContent = val;
-        $(caption).html(val);
-        };
-};
-
-
-
-// Paragraphs class
-class Paragraph {
-    constructor(parag_element, eol="###") {
-      this.parag_element = parag_element;
-      this.eol = eol;
-      this.nextParagraph = false;
     }
-
-    end_time(){
-        if (!this.nextParagraph){
-            this.as_text(); //to update nextParag var 
-        }   
-        try{
-        this._end_time = this.nextParagraph.getElementsByClassName("exchange--timestamp-value").item(0).innerText;}
-        catch{
-            debugger;
-        }
-        return this._end_time;
+     
+    function  start_time(parag_element){
+        parag_element;
+        return parag_element.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
     }
-
-    as_text(){
-        return this._extract_text(this.parag_element);
-    }
-
-    start_time(){
-        this._start_time = this.parag_element.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
-        return this._start_time;
-    }
-
-  
-    _extract_text(parag_element){
-        this.nextParagraph = parag_element.nextSibling;
-        var content = parag_element.getElementsByClassName("exchange--content");
-        text = $(content).text();
-        if (!this._is_complete(text)){
-            try{
-            return text.replace(this.eol, "").concat("<br>").concat(this._extract_text(parag_element.nextSibling));}
-            catch{
-            return text.replace(this.eol, "");
-            debugger; 
-            }
-        }
-         
-        return text;
-    }
+    function is_complete(text, eol="###"){
+        var val = !(text.length >= eol.length && text.substring(text.length-eol.length, text.length) == eol); 
+        return !(text.length >= eol.length && text.substring(text.length-eol.length, text.length) == eol);
+    }  
     
-    _is_complete(text){
-        return !(text.length >= this.eol.length && text.substring(text.length-this.eol.length, text.length) == this.eol);
-      }  
+    function as_text(parag_element){
+        var content = parag_element.getElementsByClassName("exchange--content");
+        return $(content).text();
+    }    
 }
-
-
