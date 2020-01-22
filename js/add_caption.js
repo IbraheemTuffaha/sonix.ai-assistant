@@ -37,9 +37,14 @@ function is_complete(text) {
 
 
 function update_caption() {
-    var current_time = time_bar.getElementsByClassName("timecode text--noselect")[0];
+    var total_time = timestr2int(time_bar.getElementsByClassName("timecode text--noselect")[1].innerText);
+    var elabsed_bar = $(".ProgressBar-elapsed");
+    var elabsed_bar_width = parseFloat(elabsed_bar["0"].style.cssText.replace("width: ", "").replace("%;", "")); //percentage of total width
+    var current_time = total_time * elabsed_bar_width;
+
+
     var paragraphs = getParagraphs();
-    var index = get_index_of_paragraph(paragraphs, current_time.innerText);
+    var index = get_index_of_paragraph(paragraphs, current_time);
     parag_text = as_text(paragraphs[index]);
     if (!is_complete(parag_text) && index < paragraphs.length - 1) {
         next_parag_text = as_text(paragraphs[index + 1]);
@@ -51,12 +56,11 @@ function update_caption() {
 
     // function receives a time frame as string ("HH:MM:SS") , and returns a 
     // index of corresponding paragraph
-    function get_index_of_paragraph(paragraphs, timestr) {
-        var timeint = timestr2int(timestr);
+    function get_index_of_paragraph(paragraphs, current_time) {
         var paragraph_index = 0;
         var i;
         for (i = 0; i < paragraphs.length - 1; i++) {
-            var cond = timeint >= timestr2int(start_time(paragraphs[i + 1]));
+            var cond = current_time >= start_time(paragraphs[i + 1]);
             if (!cond) {
                 break;
             }
@@ -85,7 +89,7 @@ function update_caption() {
 
     // get start time of a paragraph 
     function start_time(parag_element) {
-        return parag_element.getElementsByClassName("exchange--timestamp-value").item(0).innerText;
+        return parseFloat(parag_element.dataset.exchangeFrom);
     }
 
     // get text content of a paragraph
