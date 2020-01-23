@@ -2,7 +2,8 @@
 var eol = "###"
 var time_bar = document.getElementById("waveform");
 var vid = document.getElementById("vjs_video_3_html5_api");
-vid.ontimeupdate = update_caption;
+
+vid.addEventListener("timeupdate", update_caption);
 
 // if current time is close to the next paragraph by this margin
 // switch to the next paragraph
@@ -36,10 +37,7 @@ function is_complete(text) {
 
 
 function update_caption() {
-    var total_time = timestr2int(time_bar.getElementsByClassName("timecode text--noselect")[1].innerText);
-    var elabsed_bar = $(".ProgressBar-elapsed");
-    var elabsed_bar_width = parseFloat(elabsed_bar["0"].style.cssText.replace("width: ", "").replace("%;", "")); //percentage of total width
-    var current_time = total_time * elabsed_bar_width;
+    var current_time = vid.currentTime*100.0;//total_time * elabsed_bar_width;
     var paragraphs = getParagraphs();
     var index = get_index_of_paragraph(paragraphs, current_time);
     parag_text = as_text(paragraphs[index]);
