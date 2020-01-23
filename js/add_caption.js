@@ -4,6 +4,7 @@ var time_bar = document.getElementById("waveform");
 var vid = document.getElementById("vjs_video_3_html5_api");
 
 vid.addEventListener("timeupdate", update_caption);
+window.addEventListener("keyup", update_caption);
 
 // if current time is close to the next paragraph by this margin
 // switch to the next paragraph
