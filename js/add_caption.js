@@ -1,6 +1,5 @@
 // Global declarations
 var eol = "###"
-var time_bar = document.getElementById("waveform");
 var vid = document.getElementById("vjs_video_3_html5_api");
 
 vid.addEventListener("timeupdate", update_caption);
