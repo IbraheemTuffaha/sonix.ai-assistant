@@ -70,18 +70,6 @@ function get_index_of_paragraph(paragraphs, current_time) {
     return paragraph_index;
 }
 
-// convert time in string format ("HH:MM:SS") to seconds as total seconds (int)
-function timestr2int(timestr) {
-    var segments = timestr.split(":");
-    var weight = 3600;
-    var result = 0;
-    for (segment of segments) {
-        result += parseInt(segment) * weight;
-        weight /= 60;
-    }
-    return result;
-}
-
 // get start time of a paragraph 
 function start_time(parag_element) {
     return parseFloat(parag_element.dataset.exchangeFrom);
