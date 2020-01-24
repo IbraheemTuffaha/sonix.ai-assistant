@@ -1,0 +1,11 @@
+.caption-container {
+    text-align: center;
+    position:relative;
+    top: -5em;
+  }
+
+.caption {
+    display:inline-block;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.85);
+}
