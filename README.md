@@ -16,5 +16,11 @@ https://chrome.google.com/webstore/detail/sonixai-assistant/jcihidblogjjipifllne
   - [x] Set font size to `2rem`.
   - [x] Add space between lines.
   - [ ] Add option to change font size.
+- [x] Add caption to video.
 - [ ] Change the color of Tashkeel characters.
 - [ ] Add option for automatic addition of Shaddah and Tanween-Fath.
+
+## Contributors
+1. [Ibraheem Tuffaha](https://github.com/IbraheemTuffaha).
+2. [Ali Fadel](https://github.com/AliOsm).
+3. [Hassan Umari](https://github.com/hasauino).
