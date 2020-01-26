@@ -30,7 +30,11 @@ function update_caption() {
     var current_time = vid.currentTime*100.0 + margin;//total_time * elabsed_bar_width;
     var paragraphs = getParagraphs();
     var index = get_index_of_paragraph(paragraphs, current_time);
-    if(index==-1){return 0;}//do not do anything if no caption is found
+    //do not do anything if no caption is found
+    if(index==-1){
+        $(caption).html("");
+        return 0;
+    }
     parag_text = as_text(paragraphs[index]);
 
     for(index; index < paragraphs.length - 1; index++){
@@ -42,42 +46,72 @@ function update_caption() {
 }
 
 // helper functions
-function getParagraphs() {
-    var paragraphs = document.getElementsByClassName("exchange--speaker");
-    return paragraphs;
-}
-// check if paragraph is complete (no splitting)
-function is_parag_complete(parag_element) {
-    var text = as_text(parag_element);
-    return !(text.length >= eol.length && text.substring(text.length - eol.length, text.length) == eol);
-}
 
 // function receives a time frame as string ("HH:MM:SS") , and returns a 
 // index of corresponding paragraph
 function get_index_of_paragraph(paragraphs, current_time) {
     var index = 0;
     var found = false;
-    for (index = 0; index < paragraphs.length - 1; index++) {
-        if (current_time >= start_time(paragraphs[index]) && current_time < start_time(paragraphs[index + 1])) {
+    for (index = 0; index < paragraphs.length; index++) {
+        if (is_match(current_time, paragraphs, index)) {
             found = true;
             break;
         }
     }
     //if no matching caption is found, return -1 indicating not found
     if (!found){return -1;}
+    // check previous paragraphs
     for (index; index > 0; index--){
         if (is_parag_complete(paragraphs[index-1])){break;}
     }
     return index;
 }
 
-// get start time of a paragraph 
-function start_time(parag_element) {
-    return parseFloat(parag_element.dataset.exchangeFrom);
+function getParagraphs() {
+    var paragraphs = document.getElementsByClassName("exchange--speaker");
+    return paragraphs;
+}
+
+// check if paragraph is complete (no splitting)
+function is_parag_complete(parag_element) {
+    var text = as_text(parag_element);
+    return !(text.length >= eol.length && text.substring(text.length - eol.length, text.length) == eol);
 }
 
 // get text content of a paragraph
 function as_text(parag_element) {
     var content = parag_element.getElementsByClassName("exchange--content");
     return $(content).text();
+}
+
+// Check if current time belongs to the duration of the selected paragraph
+function is_match(current_time, paragraphs, index){
+    var stime, etime;
+    //start time
+    if (index>0){
+        if(!is_parag_complete(paragraphs[index-1])){
+            var words = paragraphs[index-1].getElementsByClassName("word");
+            stime = parseFloat(words[0].dataset.from);
+        }
+        else{
+            var words = paragraphs[index].getElementsByClassName("word");
+            stime = parseFloat(words[0].dataset.from);
+        }        
+    }
+    else{
+        var words = paragraphs[index].getElementsByClassName("word");
+        stime = parseFloat(words[0].dataset.from);
+    }
+
+    //end time
+    if (index<paragraphs.length-1 && !is_parag_complete(paragraphs[index]) ){
+            var words = paragraphs[index+1].getElementsByClassName("word");
+            etime = parseFloat(words[words.length-1].dataset.to);        
+    }
+    else{
+        var words = paragraphs[index].getElementsByClassName("word");
+        etime = parseFloat(words[words.length-1].dataset.to);        
+    }
+    debugger;
+    return (current_time >= stime && current_time < etime);
 }
