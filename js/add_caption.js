@@ -112,6 +112,5 @@ function is_match(current_time, paragraphs, index){
         var words = paragraphs[index].getElementsByClassName("word");
         etime = parseFloat(words[words.length-1].dataset.to);        
     }
-    debugger;
     return (current_time >= stime && current_time < etime);
 }
