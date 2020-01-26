@@ -42,7 +42,7 @@ function update_caption() {
         next_parag_text = as_text(paragraphs[index + 1]);
         parag_text = parag_text.replace(eol, "").concat("<br>").concat(next_parag_text);
     }
-    $(caption).html(parag_text.replace(eol, ""));
+    $(caption).html(parag_text);
 }
 
 // helper functions
