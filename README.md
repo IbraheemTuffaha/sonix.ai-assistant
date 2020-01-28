@@ -1,4 +1,4 @@
-# sonix-ai
+# sonix-ai assistant
 An extension for [sonix.ai](https://sonix.ai) to add more options related to fonts and managing characters in edit environment.
 
 ## Chrome Installation
