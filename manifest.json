@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "sonix.ai assistant",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage_url": "https://github.com/IbraheemTuffaha/sonix-ai",
   "description": "An extension for sonix.ai to add more options related to fonts and managing characters in edit environment.",
   "permissions": [],
