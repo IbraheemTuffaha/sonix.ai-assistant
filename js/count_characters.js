@@ -1,16 +1,10 @@
 var eol = "###"
 
-window.addEventListener("load", function () {
-    addCounts();
-});
+var vid = document.getElementById("vjs_video_3_html5_api");
 
-window.addEventListener("keyup", function () {
+vid.addEventListener("play", function () {
     addCounts();
-});
-
-window.addEventListener('scroll', function () {
-    addCounts();
-    setTimeout(function () { addCounts() }, 200);
+    window.addEventListener("keyup", clearCounts);
 });
 
 function addCounts() {
@@ -46,4 +40,13 @@ function getParagraphs() {
 // check if paragraph is complete (no splitting)
 function is_complete(text) {
     return !(text.length >= eol.length && text.substring(text.length - eol.length, text.length) == eol);
+}
+
+function clearCounts(event) {
+    //if any button is pressed clear counts and remove keyup eventListner.
+    //except when Tab (play) button is pressed
+    if (event.keyCode !== 9) {
+        $(".characters-count").remove();
+        window.removeEventListener("keyup", clearCounts);
+    }
 }
