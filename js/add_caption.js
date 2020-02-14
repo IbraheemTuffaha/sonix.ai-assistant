@@ -1,15 +1,27 @@
+var captions_on;
+
+
+chrome.storage.local.get(['captions_on'], function (result) {
+    captions_on = result.key
+    console.log('Value currently is ' + captions_on);
+});
 // Global declarations
 var eol = "###"
 var vid = document.getElementById("vjs_video_3_html5_api");
 
-vid.onplay = function() {
-    vid.addEventListener("timeupdate", update_caption);
-};
+if (captions_on) {
+    vid.addEventListener("play", on_play_event);
+    vid.addEventListener("pause", on_pause_event);
+}
 
-vid.onpause = function() {
+
+function on_play_event() {
+    vid.addEventListener("timeupdate", update_caption);
+}
+
+function on_pause_event() {
     vid.removeEventListener("timeupdate", update_caption);
 };
-
 // if current time is close to the next paragraph by this margin
 // switch to the next paragraph
 var margin = 5
@@ -30,20 +42,40 @@ var text = document.createTextNode("");
 caption.appendChild(text);
 caption_container.appendChild(caption);
 
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    if ("captions_on" in changes) {
+        if (!changes["captions_on"].oldValue && changes["captions_on"].newValue) {
+            vid.addEventListener("play", on_play_event);
+            vid.addEventListener("pause", on_pause_event);
+            document.getElementById("caption_container").style.display = "block";
+            update_caption()
+            console.log("on");
+        }
+        if (changes["captions_on"].oldValue && !changes["captions_on"].newValue) {
+            vid.removeEventListener("play", on_play_event);
+            vid.removeEventListener("pause", on_pause_event);
+            vid.removeEventListener("timeupdate", update_caption);
+            document.getElementById("caption_container").style.display = "none";
+            console.log("off");
+        }
+    }
+
+});
+
 
 function update_caption() {
-    var current_time = vid.currentTime*100.0 + margin;//total_time * elabsed_bar_width;
+    var current_time = vid.currentTime * 100.0 + margin;//total_time * elabsed_bar_width;
     var paragraphs = getParagraphs();
     var index = get_index_of_paragraph(paragraphs, current_time);
     //do not do anything if no caption is found
-    if(index==-1){
+    if (index == -1) {
         $(caption).html("");
         return 0;
     }
     parag_text = as_text(paragraphs[index]);
 
-    for(index; index < paragraphs.length - 1; index++){
-        if (is_parag_complete(paragraphs[index])){break;}
+    for (index; index < paragraphs.length - 1; index++) {
+        if (is_parag_complete(paragraphs[index])) { break; }
         next_parag_text = as_text(paragraphs[index + 1]);
         parag_text = parag_text.replace(eol, "").concat("<br>").concat(next_parag_text);
     }
@@ -64,10 +96,10 @@ function get_index_of_paragraph(paragraphs, current_time) {
         }
     }
     //if no matching caption is found, return -1 indicating not found
-    if (!found){return -1;}
+    if (!found) { return -1; }
     // check previous paragraphs
-    for (index; index > 0; index--){
-        if (is_parag_complete(paragraphs[index-1])){break;}
+    for (index; index > 0; index--) {
+        if (is_parag_complete(paragraphs[index - 1])) { break; }
     }
     return index;
 }
@@ -90,32 +122,32 @@ function as_text(parag_element) {
 }
 
 // Check if current time belongs to the duration of the selected paragraph
-function is_match(current_time, paragraphs, index){
+function is_match(current_time, paragraphs, index) {
     var stime, etime;
     //start time
-    if (index>0){
-        if(!is_parag_complete(paragraphs[index-1])){
-            var words = paragraphs[index-1].getElementsByClassName("word");
+    if (index > 0) {
+        if (!is_parag_complete(paragraphs[index - 1])) {
+            var words = paragraphs[index - 1].getElementsByClassName("word");
             stime = parseFloat(words[0].dataset.from);
         }
-        else{
+        else {
             var words = paragraphs[index].getElementsByClassName("word");
             stime = parseFloat(words[0].dataset.from);
-        }        
+        }
     }
-    else{
+    else {
         var words = paragraphs[index].getElementsByClassName("word");
         stime = parseFloat(words[0].dataset.from);
     }
 
     //end time
-    if (index<paragraphs.length-1 && !is_parag_complete(paragraphs[index]) ){
-            var words = paragraphs[index+1].getElementsByClassName("word");
-            etime = parseFloat(words[words.length-1].dataset.to);        
+    if (index < paragraphs.length - 1 && !is_parag_complete(paragraphs[index])) {
+        var words = paragraphs[index + 1].getElementsByClassName("word");
+        etime = parseFloat(words[words.length - 1].dataset.to);
     }
-    else{
+    else {
         var words = paragraphs[index].getElementsByClassName("word");
-        etime = parseFloat(words[words.length-1].dataset.to);        
+        etime = parseFloat(words[words.length - 1].dataset.to);
     }
     return (current_time >= stime && current_time < etime);
 }
