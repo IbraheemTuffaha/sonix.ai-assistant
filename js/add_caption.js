@@ -1,18 +1,18 @@
-var captions_on;
+var hide_captions;
 
 
-chrome.storage.local.get(['captions_on'], function (result) {
-    captions_on = result.key
-    console.log('Value currently is ' + captions_on);
+chrome.storage.local.get(['hide_captions'], function (result) {
+    hide_captions = result.hide_captions;
+    if (!hide_captions) {
+        vid.addEventListener("play", on_play_event);
+        vid.addEventListener("pause", on_pause_event);
+    }
 });
 // Global declarations
 var eol = "###"
 var vid = document.getElementById("vjs_video_3_html5_api");
 
-if (captions_on) {
-    vid.addEventListener("play", on_play_event);
-    vid.addEventListener("pause", on_pause_event);
-}
+
 
 
 function on_play_event() {
@@ -43,20 +43,18 @@ caption.appendChild(text);
 caption_container.appendChild(caption);
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
-    if ("captions_on" in changes) {
-        if (!changes["captions_on"].oldValue && changes["captions_on"].newValue) {
+    if ("hide_captions" in changes) {
+        if (changes["hide_captions"].oldValue && !changes["hide_captions"].newValue) {
             vid.addEventListener("play", on_play_event);
             vid.addEventListener("pause", on_pause_event);
             document.getElementById("caption_container").style.display = "block";
             update_caption()
-            console.log("on");
         }
-        if (changes["captions_on"].oldValue && !changes["captions_on"].newValue) {
+        if (!changes["hide_captions"].oldValue && changes["hide_captions"].newValue) {
             vid.removeEventListener("play", on_play_event);
             vid.removeEventListener("pause", on_pause_event);
             vid.removeEventListener("timeupdate", update_caption);
             document.getElementById("caption_container").style.display = "none";
-            console.log("off");
         }
     }
 
