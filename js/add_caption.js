@@ -1,6 +1,7 @@
 var show_captions;
 
-
+// this is neeeded for initialization, when the user opens sonix,
+// the user-saved options are retrieved
 chrome.storage.local.get(['show_captions'], function (result) {
     show_captions = result.show_captions;
     if (show_captions) {
@@ -42,14 +43,19 @@ var text = document.createTextNode("");
 caption.appendChild(text);
 caption_container.appendChild(caption);
 
+// this is needed if user changes the preferences/options while he is editing
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     if ("show_captions" in changes) {
+        //if show captions has become true (after bein false), add listen for
+        // video play event, and make captions visible
         if (!changes["show_captions"].oldValue && changes["show_captions"].newValue) {
             vid.addEventListener("play", on_play_event);
             vid.addEventListener("pause", on_pause_event);
             document.getElementById("caption_container").style.display = "block";
             update_caption()
         }
+        //if show captions has become false (after bein true), stop listening for
+        // video play event, and hide captions div container        
         if (changes["show_captions"].oldValue && !changes["show_captions"].newValue) {
             vid.removeEventListener("play", on_play_event);
             vid.removeEventListener("pause", on_pause_event);
