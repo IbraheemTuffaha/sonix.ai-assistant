@@ -2,8 +2,8 @@ chrome.storage.local.get(['counts_always'], function (result) {
     document.getElementById('addon_counts_switch').checked = result.counts_always
 });
 
-chrome.storage.local.get(['hide_captions'], function (result) {
-    document.getElementById('addon_captions_switch').checked = result.hide_captions
+chrome.storage.local.get(['show_captions'], function (result) {
+    document.getElementById('addon_captions_switch').checked = result.show_captions
 });
 
 function toggle_counts_update(event) {
@@ -11,7 +11,7 @@ function toggle_counts_update(event) {
 }
 
 function addon_captions_switch(event) {
-    chrome.storage.local.set({ hide_captions: this.checked });
+    chrome.storage.local.set({ show_captions: this.checked });
 }
 
 document.getElementById('addon_counts_switch').addEventListener('change', toggle_counts_update);  

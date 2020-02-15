@@ -1,9 +1,9 @@
-var hide_captions;
+var show_captions;
 
 
-chrome.storage.local.get(['hide_captions'], function (result) {
-    hide_captions = result.hide_captions;
-    if (!hide_captions) {
+chrome.storage.local.get(['show_captions'], function (result) {
+    show_captions = result.show_captions;
+    if (show_captions) {
         vid.addEventListener("play", on_play_event);
         vid.addEventListener("pause", on_pause_event);
     }
@@ -43,14 +43,14 @@ caption.appendChild(text);
 caption_container.appendChild(caption);
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
-    if ("hide_captions" in changes) {
-        if (changes["hide_captions"].oldValue && !changes["hide_captions"].newValue) {
+    if ("show_captions" in changes) {
+        if (!changes["show_captions"].oldValue && changes["show_captions"].newValue) {
             vid.addEventListener("play", on_play_event);
             vid.addEventListener("pause", on_pause_event);
             document.getElementById("caption_container").style.display = "block";
             update_caption()
         }
-        if (!changes["hide_captions"].oldValue && changes["hide_captions"].newValue) {
+        if (changes["show_captions"].oldValue && !changes["show_captions"].newValue) {
             vid.removeEventListener("play", on_play_event);
             vid.removeEventListener("pause", on_pause_event);
             vid.removeEventListener("timeupdate", update_caption);
