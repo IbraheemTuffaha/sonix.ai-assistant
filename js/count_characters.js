@@ -43,7 +43,6 @@ function getCharCountParagraphs() {
     var paragraphs = document.getElementsByClassName("exchange--speaker"),
         paragraphsArray = [].slice.call(paragraphs),
         paragraphsOnShow = paragraphsArray.filter(isVisible);
-    console.log(paragraphsOnShow);
     return paragraphsOnShow;
 }
 
