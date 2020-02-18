@@ -2,10 +2,10 @@
   "manifest_version": 2,
 
   "name": "sonix.ai assistant",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage_url": "https://github.com/IbraheemTuffaha/sonix-ai",
   "description": "An extension for sonix.ai to add more options related to fonts and managing characters in edit environment.",
-  "permissions": [],
+  "permissions": ["storage"],
   "content_scripts": [{
     "css": ["css/count_characters.css", "css/change_font.css", "css/caption.css"],
     "js": ["js/jquery-3.4.1.min.js", "js/count_characters.js", "js/constants.js", "js/change_font.js", "js/add_caption.js"],
@@ -15,7 +15,9 @@
   "web_accessible_resources": [
     "fonts/Amiri-Regular.woff2"
   ],
-
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
