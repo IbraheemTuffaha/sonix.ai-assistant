@@ -2,13 +2,8 @@
 var eol = "###"
 var vid = document.getElementById("vjs_video_3_html5_api");
 
-vid.onplay = function() {
-    vid.addEventListener("timeupdate", update_caption);
-};
-
-vid.onpause = function() {
-    vid.removeEventListener("timeupdate", update_caption);
-};
+vid.addEventListener("timeupdate", update_caption);
+window.addEventListener("keyup", update_caption);
 
 // if current time is close to the next paragraph by this margin
 // switch to the next paragraph

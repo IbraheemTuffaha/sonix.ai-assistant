@@ -1,15 +1,21 @@
-var eol = "###"
+var eol = "###";
 
-var vid = document.getElementById("vjs_video_3_html5_api");
-
-vid.addEventListener("play", function () {
+window.addEventListener("load", function () {
     addCounts();
-    window.addEventListener("keyup", clearCounts);
+});
+
+window.addEventListener("keyup", function () {
+    addCounts();
+});
+
+window.addEventListener('scroll', function () {
+    addCounts();
+    setTimeout(function () { addCounts(); }, 200);
 });
 
 function addCounts() {
     $(".characters-count").remove();
-    var paragraphs = getParagraphs();
+    var paragraphs = getCharCountParagraphs();
     for (var i = 0; i < paragraphs.length; ++i) {
         addCount(paragraphs[i]);
     }
@@ -33,20 +39,23 @@ function addCount(obj) {
     $(extra).append("<span class=\"characters-count\">" + count.toString() + "</span>");
 };
 
-function getParagraphs() {
-    var paragraphs = document.getElementsByClassName("exchange--speaker");
-    return paragraphs;
+function getCharCountParagraphs() {
+    var paragraphs = document.getElementsByClassName("exchange--speaker"),
+        paragraphsArray = [].slice.call(paragraphs),
+        paragraphsOnShow = paragraphsArray.filter(isVisible);
+    return paragraphsOnShow;
 }
+
+function isVisible(elm) {
+    var vpH = $(window).height(), // Viewport Height
+        st = $(window).scrollTop(), // Scroll Top
+        y = $(elm).offset().top,
+        elementHeight = $(elm).height();
+
+    return (y > st) && ( (y < (vpH + st)) || (y + elementHeight < st + vpH) );
+}
+
 // check if paragraph is complete (no splitting)
 function is_complete(text) {
     return !(text.length >= eol.length && text.substring(text.length - eol.length, text.length) == eol);
-}
-
-function clearCounts(event) {
-    //if any button is pressed clear counts and remove keyup eventListner.
-    //except when Tab (play) button is pressed
-    if (event.keyCode !== 9) {
-        $(".characters-count").remove();
-        window.removeEventListener("keyup", clearCounts);
-    }
 }
