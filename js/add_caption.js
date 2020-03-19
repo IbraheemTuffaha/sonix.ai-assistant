@@ -15,7 +15,6 @@ var element = document.getElementById("vjs_video_3");
 //this div will hold the captions
 var caption_container = document.createElement("div");
 caption_container.setAttribute("id", "caption_container");
-caption_container.setAttribute("dir", "rtl");
 caption_container.className = "caption-container";
 element.appendChild(caption_container);
 var caption = document.createElement("p");
@@ -25,8 +24,22 @@ var text = document.createTextNode("");
 caption.appendChild(text);
 caption_container.appendChild(caption);
 
+bFirstCaptionUpdate = true;
 
 function update_caption() {
+
+    if (bFirstCaptionUpdate) {
+        const rtlLangRegex = RegExp(/(Arabic|Hebrew)/);
+        const langDiv = document.getElementsByClassName("language--dropdown");
+        const lang = $(langDiv).text();
+        if (rtlLangRegex.test(lang)) {
+            caption_container.setAttribute("dir", "rtl");
+        } else {
+            caption_container.setAttribute("dir", "ltr");
+        }
+        bFirstCaptionUpdate = false;
+    }
+
     var current_time = vid.currentTime*100.0 + margin;//total_time * elabsed_bar_width;
     var paragraphs = getParagraphs();
     var index = get_index_of_paragraph(paragraphs, current_time);
