@@ -24,4 +24,4 @@ https://chrome.google.com/webstore/detail/sonixai-assistant/jcihidblogjjipifllne
 1. [Ibraheem Tuffaha](https://github.com/IbraheemTuffaha).
 2. [Ali Fadel](https://github.com/AliOsm).
 3. [Hassan Umari](https://github.com/hasauino).
-3. [Ghazi Majdoub](https://github.com/Dev-Now)
+3. [Ghazi Majdoub](https://github.com/Dev-Now).
